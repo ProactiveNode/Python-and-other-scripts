@@ -17,14 +17,20 @@ def cleanup_date_T(first_element):
 def cleanup_time_t(first_element):
     first_element_split = first_element.split()
     if (b'PM' or 'PM') in first_element_split[1]:
-        if '12' == first_element_split[0][0:2]:
-           pass
+        if b'12' in first_element_split[0][0:2]:
+            total_hours =  int(first_element_split[0][0:2])
         else:
             total_hours = int(first_element_split[0][0:2]) + 12
+    elif (b'AM' or 'AM') in first_element_split[1]:
+        if b'12' in first_element_split[0][0:2]:
+            total_hours =  0
+        else:
+            total_hours =  int(first_element_split[0][0:2])
     else:
         total_hours =  int(first_element_split[0][0:2])
     total_minutes = int(first_element_split[0][3:5])
     return(total_hours,total_minutes)
+
 
 #Cleansup the system boot time output and puts it in a tuple.
 def cleanup_past_system_date_time(first_element):
@@ -42,14 +48,15 @@ def cleanup_past_system_date_time(first_element):
     past_date = joined_date.split('/')
 
     #Time. Converts the time from 12-hour AM/PM to 24-hour.
+    splitting = first_element_split[4].split(b':')
     if (b'PM' or 'PM' ) in first_element_split[5]:
         if '12' == first_element_split[4][0:2]:
-            pass
+            total_hours_past=int(splitting[0])
         else:
-            total_hours_past = int(first_element_split[4][0:2]) + 12
+            total_hours_past = int(splitting[0]) + 12
     else:
-        total_hours_past=int(first_element_split[4][0:2])
-    total_minutes_past = int(first_element_split[4][3:5])
+        total_hours_past=int(splitting[0])
+    total_minutes_past = int(splitting[1])
     return(past_date, total_hours_past, total_minutes_past)
 
     
@@ -68,8 +75,9 @@ def main():
     current_time_total_minutes= cleanup_time_t(current_time_t[0])
     past_date_time_tuple = cleanup_past_system_date_time(past_system_date_time[0])
 
+
     #Organizes the date and time in this format: Year-Month-Day Hour-Minute
-    time_current = datetime.datetime(date_tuple[0],date_tuple[1],date_tuple[2], current_time_total_minutes[0],current_time_total_minutes[1])
+    time_current = datetime.datetime(int(date_tuple[0]),int(date_tuple[1]),date_tuple[2], current_time_total_minutes[0],current_time_total_minutes[1])
     time_past = datetime.datetime(int(past_date_time_tuple[0][2]),int(past_date_time_tuple[0][0]),int(past_date_time_tuple[0][1]),past_date_time_tuple[1],past_date_time_tuple[2])
 
     #Subtracts the current time to the system boot time
