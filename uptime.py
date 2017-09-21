@@ -54,6 +54,11 @@ def cleanup_past_system_date_time(first_element):
             total_hours_past=int(splitting[0])
         else:
             total_hours_past = int(splitting[0]) + 12
+    elif (b'AM' or 'AM') in first_element_split[5]:
+        if b'12' == first_element_split[4][0:2]:
+            total_hours_past = 0
+        else:
+            total_hours_past = int(splitting[0])
     else:
         total_hours_past=int(splitting[0])
     total_minutes_past = int(splitting[1])
