@@ -50,7 +50,7 @@ def cleanup_past_system_date_time(first_element):
     #Time. Converts the time from 12-hour AM/PM to 24-hour.
     splitting = first_element_split[4].split(b':')
     if (b'PM' or 'PM' ) in first_element_split[5]:
-        if '12' == first_element_split[4][0:2]:
+        if (b'12 or '12') == first_element_split[4][0:2]:
             total_hours_past=int(splitting[0])
         else:
             total_hours_past = int(splitting[0]) + 12
