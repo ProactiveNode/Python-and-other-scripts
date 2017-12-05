@@ -27,6 +27,25 @@ if [ $answer == "1" ]; then
 	newAlpha=$newAlpha1$newAlpha2
 
 	newWord=$( echo $encodeString | tr $alphabet $newAlpha )
-	#echo $newAlpha
 	echo "Your encrypted word: " $newWord
+fi
+
+if [ $answer == "2" ]; then
+	#Gives a list of all possible decoded words with how much it was shifted
+	echo -n "Enter the string you would like to decode: "
+	read decodeString
+	
+	COUNTER=0
+	NEWCOUNT=${#alphabet}
+	while [ $COUNTER -lt ${#alphabet} ]; do
+		newReverseAlpha1=${alphabet:$COUNTER:${#alphabet}}
+		newReverseAlpha2=${alphabet:0:$COUNTER}
+		newReverseAlpha=$newReverseAlpha1$newReverseAlpha2
+		
+		newReverseWord=$( echo $decodeString | tr $alphabet $newReverseAlpha )
+
+		echo "Shift" $NEWCOUNT": "$newReverseWord
+		let "NEWCOUNT--"
+		let "COUNTER++"
+	done
 fi
