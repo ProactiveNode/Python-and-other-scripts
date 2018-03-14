@@ -1,3 +1,6 @@
+#ProactiveNode
+#Purpose: To obtain the running services of a Linux machine
+#Tested on Ubuntu 14
 import subprocess
 
 def main():
